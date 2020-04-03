@@ -225,9 +225,8 @@ fi
 
 # If container is started as root user, restart as dedicated supertokens user
 if [ "$(id -u)" = "0" ] && [ "$1" = 'supertokens' ]; then
-    echo "hahahahaha"
+    echo "$@"
     exec gosu supertokens "$@"
 else
-    echo "hahahahaha 1"
     exec "$@"
 fi
