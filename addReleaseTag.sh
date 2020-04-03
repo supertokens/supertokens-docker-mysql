@@ -2,7 +2,7 @@
 # Expects a releasePassword file to be ./
 
 # get version------------
-version=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2`
+version=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2`
 
 branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
 branch_name="(unnamed branch)"     # detached HEAD
@@ -25,9 +25,7 @@ fi
 # check if current commit already has a tag or not------------
 currTag=`git tag -l --points-at $commit_hash`
 
-version3=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2`
-
-expectedCurrTag=dev-v$version3
+expectedCurrTag=dev-v$version
 
 if [[ $currTag == $expectedCurrTag ]]
 then
@@ -39,7 +37,7 @@ else
 	exit 1
 fi
 
-git tag $version -f
+git tag v$version -f
 git push --tags -f
 
 password=`cat ./apiPassword`
