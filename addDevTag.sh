@@ -44,17 +44,6 @@ else
 	exit 1
 fi
 
-# check if release version of this tag exists------------
-
-if [[ `git tag -l $version` == $version ]]
-then
-    RED='\033[0;31m'
-    NC='\033[0m'
-    printf "${RED}The released version of this tag already exists${NC}\n"
-    exit 1
-fi
-
-
 # tag this commit and push it------------
 
 git tag dev-v$version $commit_hash -f
