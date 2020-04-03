@@ -37,6 +37,9 @@ else
 	exit 1
 fi
 
+git tag --delete $currTag
+git push --delete origin $currTag
+
 git tag v$version -f
 git push --tags -f
 
