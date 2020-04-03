@@ -2,40 +2,22 @@ version: 2.1
 orbs:
   jq: circleci/jq@1.9.1
 jobs:
-  build-image:
+  publish:
     machine:
       image: ubuntu-1604:201903-01
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "bb:7e:3e:43:17:12:36:65:c2:cc:c2:ad:2a:b7:30:2d"
       - checkout
       - jq/install
-      # - run:
-      #     name: check if image tag already exists
-      #     command: |
-      #       PLUGIN_VERSION=$(cat Dockerfile | grep "ARG PLUGIN_VERSION=" | cut -d'=' -f2)
-      #       CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
-      #       STATUS_CODE=$(curl -I -X GET https://hub.docker.com/v2/repositories/supertokens/supertokens-mysql/tags/${CORE_VERSION}_${PLUGIN_VERSION} -o /dev/null -w '%{http_code}\n' -s)
-      #       if [[ $STATUS_CODE -eq "200" ]]
-      #       then
-      #           echo "version already exists"
-      #           exit 1
-      #       fi
       - run:
           name: build docker image and test
           command: |
             ./test.sh
             if [[ $? -ne 0 ]]; then exit 1; fi
       - run:
-          name: merge with master
+          name: tag for dockerhub
           command: |
-            PLUGIN_VERSION=$(cat Dockerfile | grep "ARG PLUGIN_VERSION=" | cut -d'=' -f2)
-            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2)
-            git checkout master
-            git merge latest
-            git push
-            git tag ${CORE_VERSION}_${PLUGIN_VERSION} -f
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1 -f2)
+            git tag ${CORE_VERSION} -f
             git push origin --tags -f
       - run:
           name: check if is latest core and plugin
@@ -56,11 +38,31 @@ jobs:
               git tag latest -f
               git push origin --tags -f
             fi
+  test:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+      - jq/install
+      - run:
+          name: build docker image and test
+          command: |
+            ./test.sh
+            if [[ $? -ne 0 ]]; then exit 1; fi
+
 workflows:
   version: 2
   tagged-build:
     jobs:
-      - build-image:
+      - publish:
           filters:
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
             branches:
-              only: latest
+              ignore: /.*/
+      - test:
+          filters:
+            tags:
+              only: /dev-v[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
