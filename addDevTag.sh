@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # get version------------
-version=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1 -f2`
+version=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2`
 
 branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
 branch_name="(unnamed branch)"     # detached HEAD
@@ -10,7 +10,7 @@ branch_name=${branch_name##refs/heads/}
 
 # check if branch is correct based on the version-----------
 
-if ! [[ $version == $branch_name ]]
+if ! [[ $version == $branch_name* ]]
 then
 	RED='\033[0;31m'
     NC='\033[0m' # No Color

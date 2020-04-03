@@ -16,7 +16,7 @@ jobs:
       - run:
           name: tag for dockerhub
           command: |
-            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1 -f2)
+            CORE_VERSION=$(cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2)
             git tag ${CORE_VERSION} -f
             git push origin --tags -f
       - run:

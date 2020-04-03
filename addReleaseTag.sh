@@ -2,7 +2,7 @@
 # Expects a releasePassword file to be ./
 
 # get version------------
-version=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1 -f2`
+version=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2 | cut -d'.' -f1,2`
 
 branch_name="$(git symbolic-ref HEAD 2>/dev/null)" ||
 branch_name="(unnamed branch)"     # detached HEAD
@@ -25,7 +25,9 @@ fi
 # check if current commit already has a tag or not------------
 currTag=`git tag -l --points-at $commit_hash`
 
-expectedCurrTag=dev-v$version
+version3=`cat Dockerfile | grep "ARG CORE_VERSION=" | cut -d'=' -f2`
+
+expectedCurrTag=dev-v$version3
 
 if [[ $currTag == $expectedCurrTag ]]
 then
@@ -36,9 +38,6 @@ else
 	printf "${RED}This commit does not have the right tag for the version you want to release.${NC}\n"
 	exit 1
 fi
-
-git tag --delete $currTag
-git push --delete origin $currTag
 
 git tag $version -f
 git push --tags -f
