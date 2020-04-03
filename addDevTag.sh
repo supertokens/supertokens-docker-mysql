@@ -46,7 +46,7 @@ fi
 
 # check if release version of this tag exists------------
 
-if git rev-parse v$version >/dev/null 2>&1
+if git rev-parse $version >/dev/null 2>&1
 then
     RED='\033[0;31m'
     NC='\033[0m'
