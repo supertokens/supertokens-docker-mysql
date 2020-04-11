@@ -49,7 +49,8 @@ Available environment variables
   
 
 ```bash
-$ docker run 
+$ docker run \
+	-p 3567:3567 \
 	-e MYSQL_USER=mysqlUser \
 	-e MYSQL_HOST=localhost \
 	-e MYSQL_PORT=3306 \
@@ -57,7 +58,7 @@ $ docker run
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/refresh \
 	-e LICENSE_KEY_ID=yourLicenseKeyID \
-	-d supertokens-mysql dev
+	-d supertokens/supertokens-mysql dev
 ```
 
 #### Using custom config file
@@ -71,9 +72,10 @@ $ docker run
 
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-v /path/to/config.yaml:/usr/lib/supertokens/config.yaml \
 	-e LICENSE_KEY_ID=yourLicenseKeyID \
-	-d supertokens-mysql dev
+	-d supertokens/supertokens-mysql dev
 ```
 
 ## License Key
@@ -87,23 +89,25 @@ Please check this [link](https://supertokens.io/docs/community/about-license-key
 #### Using environment variables
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-e MYSQL_USER=mysqlUser \
 	-e MYSQL_PASSWORD=password \
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/path \
 	-e LICENSE_KEY_ID=<your-license-key-id> \
-	-d supertokens-mysql production
+	-d supertokens/supertokens-mysql production
 ```
 
 #### Using your `licenseKey` file
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-e MYSQL_USER=mysqlUser \
 	-e MYSQL_PASSWORD=password \
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/path \
 	-v /path/to/licenseKey:/usr/lib/supertokens/licenseKey \	
-	-d supertokens-mysql dev
+	-d supertokens/supertokens-mysql dev
 ```
 
 ## Logging
@@ -114,6 +118,7 @@ $ docker run \
 
 ```bash
 $ docker run \
+	-p 3567:3567 \
 	-v /path/to/logsFolder:/home/logsFolder \
 	-e INFO_LOG_PATH=/home/logsFolder/info.log \
 	-e ERROR_LOG_PATH=/home/logsFolder/error.log \
@@ -122,12 +127,12 @@ $ docker run \
 	-e COOKIE_DOMAIN=example.com \
 	-e REFRESH_API_PATH=/example/path \
 	-e LICENSE_KEY_ID=yourLicenseKeyId \
-	-d supertokens-mysql production
+	-d supertokens/supertokens-mysql production
 ```
 
 ## Database setup
 - Before you start this container, make sure to [initialize your database](https://supertokens.io/docs/community/getting-started/database-setup/mysql).
-- You need to ensure that the MySQL database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a MySQL instance to be available.
+- You do not need to ensure that the MySQL database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a MySQL instance to be available.
 
 
 ## CLI reference
