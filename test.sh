@@ -53,7 +53,7 @@ curl -X GET "https://api.supertokens.io/development/license-key?password=$API_KE
 LICENSE_KEY_ID=$(cat $LICENSE_FILE_PATH | jq -r ".info.licenseKeyId")
 
 # start mysql server
-docker run --rm -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root mysql --default_authentication_plugin=mysql_native_password
+docker run --rm -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root mysql
 
 sleep 26s
 
