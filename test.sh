@@ -106,7 +106,7 @@ test_equal `no_of_running_containers` 1 "start with mysql user, mysql password, 
 
 #---------------------------------------------------
 # start with mysql user, mysql password, cookie domain refresh API path and license key id
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm --name supertokens supertokens-mysql:circleci
+docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
 
 sleep 17s
 
