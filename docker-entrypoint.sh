@@ -47,25 +47,25 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
     # verify mysql user name is passed
-    if [ -z $MYSQL_USER ]
+    if [ ! -z $MYSQL_USER ]
     then
         echo "mysql_user: \"$MYSQL_USER\"" >> $CONFIG_FILE
     fi
 
     # verify mysql password is passed
-    if [ -z $MYSQL_PASSWORD ]
+    if [ ! -z $MYSQL_PASSWORD ]
     then
         echo "mysql_password: \"$MYSQL_PASSWORD\"" >> $CONFIG_FILE
     fi
 
     # verify cookie domain is passed
-    if [ -z $COOKIE_DOMAIN ]
+    if [ ! -z $COOKIE_DOMAIN ]
     then
         echo "cookie_domain: \"$COOKIE_DOMAIN\"" >> $CONFIG_FILE
     fi
 
     # verify refresh api path is passed
-    if [ -z $REFRESH_API_PATH ]
+    if [ ! -z $REFRESH_API_PATH ]
     then
         echo "refresh_api_path: \"$REFRESH_API_PATH\"" >> $CONFIG_FILE
     fi
