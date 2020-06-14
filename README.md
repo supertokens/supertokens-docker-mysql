@@ -1,15 +1,8 @@
 ## About this image
 
 The following parameters are required to start the container:
-- `dev` / `production` mode
 - `config.yaml` environment variables (Configuration)
 - License Key file or License Key ID
-
-
-## `dev` / `production` mode
-- The default value of this is `dev`
-- This is the same as what the CLI expects. You can learn more about the differences [here](https://supertokens.io/docs/community/cli/start)
-
 
 ## Configuration
 You can use your own `config.yaml` file as a shared volume or pass the key-values as environment variables. 
@@ -19,8 +12,8 @@ If you do both, only the shared `config.yaml` file will be considered.
 #### Using environment variable
 Available environment variables
 - **Core** [[click for more info](https://supertokens.io/docs/community/configuration/core)]
-	- COOKIE\_DOMAIN \[**required**\]
-	- REFRESH\_API\_PATH \[**required**\]
+	- COOKIE\_DOMAIN
+	- REFRESH\_API\_PATH
 	- SUPERTOKENS\_HOST
 	- SUPERTOKENS\_PORT
 	- ACCESS\_TOKEN\_VALIDITY
@@ -37,8 +30,8 @@ Available environment variables
 	- COOKIE\_SAME\_SITE
     - MAX\_SERVER\_POOL\_SIZE
 - **MySQL:** [[click for more info](https://supertokens.io/docs/community/configuration/database/mysql)]	
-	- MYSQL\_USER \[**required**\]
-	- MYSQL\_PASSWORD \[**required**\]
+	- MYSQL\_USER
+	- MYSQL\_PASSWORD
 	- MYSQL\_CONNECTION\_POOL\_SIZE
 	- MYSQL\_HOST
 	- MYSQL\_PORT
@@ -57,10 +50,8 @@ $ docker run \
 	-e MYSQL_HOST=localhost \
 	-e MYSQL_PORT=3306 \
 	-e MYSQL_PASSWORD=password \
-	-e COOKIE_DOMAIN=example.com \
-	-e REFRESH_API_PATH=/example/refresh \
 	-e LICENSE_KEY_ID=yourLicenseKeyID \
-	-d supertokens/supertokens-mysql dev
+	-d supertokens/supertokens-mysql
 ```
 
 #### Using custom config file
@@ -77,7 +68,7 @@ $ docker run \
 	-p 3567:3567 \
 	-v /path/to/config.yaml:/usr/lib/supertokens/config.yaml \
 	-e LICENSE_KEY_ID=yourLicenseKeyID \
-	-d supertokens/supertokens-mysql dev
+	-d supertokens/supertokens-mysql
 ```
 
 ## License Key
@@ -94,10 +85,8 @@ $ docker run \
 	-p 3567:3567 \
 	-e MYSQL_USER=mysqlUser \
 	-e MYSQL_PASSWORD=password \
-	-e COOKIE_DOMAIN=example.com \
-	-e REFRESH_API_PATH=/example/path \
 	-e LICENSE_KEY_ID=<your-license-key-id> \
-	-d supertokens/supertokens-mysql production
+	-d supertokens/supertokens-mysql
 ```
 
 #### Using your `licenseKey` file
@@ -106,10 +95,8 @@ $ docker run \
 	-p 3567:3567 \
 	-e MYSQL_USER=mysqlUser \
 	-e MYSQL_PASSWORD=password \
-	-e COOKIE_DOMAIN=example.com \
-	-e REFRESH_API_PATH=/example/path \
 	-v /path/to/licenseKey:/usr/lib/supertokens/licenseKey \	
-	-d supertokens/supertokens-mysql dev
+	-d supertokens/supertokens-mysql
 ```
 
 ## Logging
@@ -126,16 +113,14 @@ $ docker run \
 	-e ERROR_LOG_PATH=/home/logsFolder/error.log \
 	-e MYSQL_USER=mysqlUser \
 	-e MYSQL_PASSWORD=password \
-	-e COOKIE_DOMAIN=example.com \
-	-e REFRESH_API_PATH=/example/path \
 	-e LICENSE_KEY_ID=yourLicenseKeyId \
-	-d supertokens/supertokens-mysql production
+	-d supertokens/supertokens-mysql
 ```
 
 ## Database setup
 - Before you start this container, make sure to [initialize your database](https://supertokens.io/docs/community/getting-started/database-setup/mysql).
 - You do not need to ensure that the MySQL database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a MySQL instance to be available.
-
+- If ```MYSQL_USER``` and ```MYSQL_PASSWORD``` are not provided, then SuperTokens will use an in memory database.
 
 ## CLI reference
 Please refer to our [documentation](https://supertokens.io/docs/community/cli/overview) for this.

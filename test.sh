@@ -65,62 +65,72 @@ NETWORK_OPTIONS="-p 3567:3567 -e MYSQL_HOST=$(ifconfig | grep -E "([0-9]{1,3}\.)
 printf "\nmysql_host: \"$(ifconfig | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}' | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
-# start with mysql user, mysql password, cookie domain and refresh API path
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e REFRESH_API_PATH=/auth/refresh --rm -d --name supertokens supertokens-mysql:circleci
+# start with no network options
+docker run --rm -d -e LICENSE_KEY_ID=$LICENSE_KEY_ID --name supertokens supertokens-mysql:circleci --no-in-mem-db 
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with mysql user, mysql password, cookie domain and refresh API path"
+test_equal `no_of_running_containers` 1 "start with no params"
 
 #---------------------------------------------------
-# start with license key id, mysql password, cookie domain and refresh API path
-docker run $NETWORK_OPTIONS -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
+# start with no network options, but in mem db
+docker run -p 3567:3567 --rm -d -e LICENSE_KEY_ID=$LICENSE_KEY_ID --name supertokens supertokens-mysql:circleci
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with license key id, mysql password, cookie domain and refresh API path"
-
-#---------------------------------------------------
-# start with mysql user, license key id, cookie domain and refresh API path
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e COOKIE_DOMAIN=supertokens.io -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
-
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with mysql user, license key id, cookie domain and refresh API path"
-
-#---------------------------------------------------
-# start with mysql user, mysql password, license key id and refresh API path
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
-
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with mysql user, mysql password, license key id and refresh API path"
-
-#---------------------------------------------------
-# start with mysql user, mysql password, cookie domain and license key id
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
-
-sleep 10s
-
-test_equal `no_of_running_containers` 1 "start with mysql user, mysql password, cookie domain and license key id"
-
-#---------------------------------------------------
-# start with mysql user, mysql password, cookie domain refresh API path and license key id
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
+test_equal `no_of_running_containers` 1 "start with no params"
 
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "start with mysql user, mysql password, cookie domain refresh API path and license key id"
+test_equal `no_of_running_containers` 2 "start with no network options, but in mem db"
 
-test_hello "start with mysql user, mysql password, cookie domain refresh API path and license key id"
+test_hello "start with no network options, but in mem db"
 
-test_session_post "start with mysql user, mysql password, cookie domain refresh API path and license key id"
+test_session_post "start with no network options, but in mem db"
+
+docker rm supertokens -f
+
+#---------------------------------------------------
+# start with mysql user, mysql password
+docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+
+sleep 10s
+
+test_equal `no_of_running_containers` 1 "start with mysql user, mysql password"
+
+#---------------------------------------------------
+# start with license key id, mysql password
+docker run $NETWORK_OPTIONS -e MYSQL_PASSWORD=root -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+
+sleep 10s
+
+test_equal `no_of_running_containers` 1 "start with license key id, mysql password"
+
+#---------------------------------------------------
+# start with mysql user, license key id
+docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+
+sleep 10s
+
+test_equal `no_of_running_containers` 1 "start with mysql user, license key id"
+
+#---------------------------------------------------
+# start with mysql user, mysql password and license key id
+docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+
+sleep 17s
+
+test_equal `no_of_running_containers` 2 "start with mysql user, mysql password and license key id"
+
+test_hello "start with mysql user, mysql password and license key id"
+
+test_session_post "start with mysql user, mysql password and license key id"
 
 docker rm supertokens -f
 
 #---------------------------------------------------
 # start by sharing config.yaml without license key id
-docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml --rm -d --name supertokens supertokens-mysql:circleci
+docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 10s
 
@@ -128,7 +138,7 @@ test_equal `no_of_running_containers` 1 "start by sharing config.yaml without li
 
 #---------------------------------------------------
 # start by sharing config.yaml with license key id
-docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
+docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -142,7 +152,7 @@ docker rm supertokens -f
 
 #---------------------------------------------------
 # start by sharing config.yaml and license key file
-docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml -v $LICENSE_FILE_PATH:/usr/lib/supertokens/licenseKey --rm -d --name supertokens supertokens-mysql:circleci
+docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml -v $LICENSE_FILE_PATH:/usr/lib/supertokens/licenseKey --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -158,7 +168,7 @@ rm -rf $LICENSE_FILE_PATH
 
 # ---------------------------------------------------
 # test info path
-docker run $NETWORK_OPTIONS -v $PWD:/home/supertokens -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e COOKIE_DOMAIN=supertokens.io -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log -e REFRESH_API_PATH=/auth/refresh -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci
+docker run $NETWORK_OPTIONS -v $PWD:/home/supertokens -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log -e LICENSE_KEY_ID=$LICENSE_KEY_ID --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
