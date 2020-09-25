@@ -40,7 +40,7 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
-    echo "\n" >> $CONFIG_FILE
+    echo "" >> $CONFIG_FILE
     
     # verify mysql user name is passed
     if [ ! -z $MYSQL_USER ]
