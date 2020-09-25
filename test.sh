@@ -70,7 +70,7 @@ test_equal `no_of_running_containers` 1 "start with no network options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
-docker run -p 3567:3567 --rm --name supertokens supertokens-mysql:circleci
+docker run -p 3567:3567 --rm -d --name supertokens supertokens-mysql:circleci
 
 sleep 17s
 
