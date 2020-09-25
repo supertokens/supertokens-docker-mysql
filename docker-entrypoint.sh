@@ -40,6 +40,8 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
+    echo "\n" >> $CONFIG_FILE
+    
     # verify mysql user name is passed
     if [ ! -z $MYSQL_USER ]
     then
@@ -184,8 +186,6 @@ then
     if [ ! -z $MYSQL_HOST ]
     then
         echo "mysql_host: \"$MYSQL_HOST\"" >> $CONFIG_FILE
-    else
-        echo "mysql_host: 0.0.0.0" >> $CONFIG_FILE
     fi
 
     # check if mysql port is passed
