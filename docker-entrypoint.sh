@@ -41,6 +41,12 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
     echo "" >> $CONFIG_FILE
+
+    # verify api keys are passed
+    if [ ! -z $API_KEYS ]
+    then
+        echo "api_keys: $API_KEYS" >> $CONFIG_FILE
+    fi
     
     # verify mysql user name is passed
     if [ ! -z $MYSQL_USER ]
@@ -210,12 +216,6 @@ then
     if [ ! -z $MYSQL_SESSION_INFO_TABLE_NAME ]
     then
         echo "mysql_session_info_table_name: \"$MYSQL_SESSION_INFO_TABLE_NAME\"" >> $CONFIG_FILE
-    fi
-
-    # check if mysql past tokens table name is passed
-    if [ ! -z $MYSQL_PAST_TOKENS_TABLE_NAME ]
-    then
-        echo "mysql_past_tokens_table_name: \"$MYSQL_PAST_TOKENS_TABLE_NAME\"" >> $CONFIG_FILE
     fi
 fi
 
