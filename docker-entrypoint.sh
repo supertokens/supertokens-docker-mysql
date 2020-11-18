@@ -41,6 +41,7 @@ chown -R supertokens:supertokens /usr/lib/supertokens/
 if [ "$CONFIG_HASH" = "$CONFIG_MD5SUM" ]
 then
     echo "" >> $CONFIG_FILE
+    echo "host: 0.0.0.0" >> $CONFIG_FILE
 
     # verify api keys are passed
     if [ ! -z $API_KEYS ]
@@ -51,33 +52,13 @@ then
     # verify mysql user name is passed
     if [ ! -z $MYSQL_USER ]
     then
-        echo "mysql_user: \"$MYSQL_USER\"" >> $CONFIG_FILE
+        echo "mysql_user: $MYSQL_USER" >> $CONFIG_FILE
     fi
 
     # verify mysql password is passed
     if [ ! -z $MYSQL_PASSWORD ]
     then
-        echo "mysql_password: \"$MYSQL_PASSWORD\"" >> $CONFIG_FILE
-    fi
-
-    # verify cookie domain is passed
-    if [ ! -z $COOKIE_DOMAIN ]
-    then
-        echo "cookie_domain: $COOKIE_DOMAIN" >> $CONFIG_FILE
-    fi
-
-    # verify refresh api path is passed
-    if [ ! -z $REFRESH_API_PATH ]
-    then
-        echo "refresh_api_path: \"$REFRESH_API_PATH\"" >> $CONFIG_FILE
-    fi
-
-    # check if supertokens host is passed
-    if [ ! -z $SUPERTOKENS_HOST ]
-    then
-        echo "host: \"$SUPERTOKENS_HOST\"" >> $CONFIG_FILE
-    else
-        echo "host: 0.0.0.0" >> $CONFIG_FILE
+        echo "mysql_password: $MYSQL_PASSWORD" >> $CONFIG_FILE
     fi
 
     # check if supertokens port is passed
@@ -96,12 +77,6 @@ then
     if [ ! -z $ACCESS_TOKEN_BLACKLISTING ]
     then
         echo "access_token_blacklisting: $ACCESS_TOKEN_BLACKLISTING" >> $CONFIG_FILE
-    fi
-
-    # check if access token path is passed
-    if [ ! -z $ACCESS_TOKEN_PATH ]
-    then
-        echo "access_token_path: \"$ACCESS_TOKEN_PATH\"" >> $CONFIG_FILE
     fi
 
     # check if access token signing key dynamic is passed
@@ -138,7 +113,7 @@ then
         # make sure supertokens user has write permission on the file
         chown supertokens:supertokens $INFO_LOG_PATH
         chmod +w $INFO_LOG_PATH
-        echo "info_log_path: \"$INFO_LOG_PATH\"" >> $CONFIG_FILE
+        echo "info_log_path: $INFO_LOG_PATH" >> $CONFIG_FILE
     else
         echo "info_log_path: null" >> $CONFIG_FILE
     fi
@@ -153,27 +128,15 @@ then
         # make sure supertokens user has write permission on the file
         chown supertokens:supertokens $ERROR_LOG_PATH
         chmod +w $ERROR_LOG_PATH
-        echo "error_log_path: \"$ERROR_LOG_PATH\"" >> $CONFIG_FILE
+        echo "error_log_path: $ERROR_LOG_PATH" >> $CONFIG_FILE
     else
         echo "error_log_path: null" >> $CONFIG_FILE
     fi
 
-    # check if cookie secure is passed
-    if [ ! -z $COOKIE_SECURE ]
+    # check if telemetry config is passed
+    if [ ! -z $DISABLE_TELEMETRY ]
     then
-        echo "cookie_secure: $COOKIE_SECURE" >> $CONFIG_FILE
-    fi
-
-    # check if session expired status code is passed
-    if [ ! -z $SESSION_EXPIRED_STATUS_CODE ]
-    then
-        echo "session_expired_status_code: $SESSION_EXPIRED_STATUS_CODE" >> $CONFIG_FILE
-    fi
-
-    # check if cookie same site is passed
-    if [ ! -z $COOKIE_SAME_SITE ]
-    then
-        echo "cookie_same_site: $COOKIE_SAME_SITE" >> $CONFIG_FILE
+        echo "disable_telemetry: $DISABLE_TELEMETRY" >> $CONFIG_FILE
     fi
 
     # check if max server pool size is passed
@@ -191,7 +154,7 @@ then
     # check if mysql host is passed
     if [ ! -z $MYSQL_HOST ]
     then
-        echo "mysql_host: \"$MYSQL_HOST\"" >> $CONFIG_FILE
+        echo "mysql_host: $MYSQL_HOST" >> $CONFIG_FILE
     fi
 
     # check if mysql port is passed
@@ -203,19 +166,31 @@ then
     # check if mysql database name is passed
     if [ ! -z $MYSQL_DATABASE_NAME ]
     then
-        echo "mysql_database_name: \"$MYSQL_DATABASE_NAME\"" >> $CONFIG_FILE
+        echo "mysql_database_name: $MYSQL_DATABASE_NAME" >> $CONFIG_FILE
     fi
 
     # check if mysql key value table name is passed
     if [ ! -z $MYSQL_KEY_VALUE_TABLE_NAME ]
     then
-        echo "mysql_key_value_table_name: \"$MYSQL_KEY_VALUE_TABLE_NAME\"" >> $CONFIG_FILE
+        echo "mysql_key_value_table_name: $MYSQL_KEY_VALUE_TABLE_NAME" >> $CONFIG_FILE
     fi
 
     # check if mysql session info table name is passed
     if [ ! -z $MYSQL_SESSION_INFO_TABLE_NAME ]
     then
-        echo "mysql_session_info_table_name: \"$MYSQL_SESSION_INFO_TABLE_NAME\"" >> $CONFIG_FILE
+        echo "mysql_session_info_table_name: $MYSQL_SESSION_INFO_TABLE_NAME" >> $CONFIG_FILE
+    fi
+
+    # check if mysql emailpassword user table name is passed
+    if [ ! -z $MYSQL_EMAILPASSWORD_USERS_TABLE_NAME ]
+    then
+        echo "mysql_emailpassword_users_table_name: $MYSQL_EMAILPASSWORD_USERS_TABLE_NAME" >> $CONFIG_FILE
+    fi
+
+    # check if mysql emailpassword password reset table name is passed
+    if [ ! -z $MYSQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME ]
+    then
+        echo "mysql_emailpassword_pswd_reset_tokens_table_name: $MYSQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME" >> $CONFIG_FILE
     fi
 fi
 

@@ -26,20 +26,10 @@ test_hello () {
 
 test_session_post () {
     message=$1
-    STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/session -H "Content-Type: application/json" -d '{
+    STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/recipe/session -H "Content-Type: application/json" -d '{
         "userId": "testing",
         "userDataInJWT": {},
-        "userDataInDatabase": {},
-        "deviceDriverInfo": {
-            "frontendSDK": [{
-                "name": "ios",
-                "version": "1.0.0"
-            }],
-            "driver": {
-                "name": "node",
-                "version": "1.0.0"
-            }
-        }
+        "userDataInDatabase": {}
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
@@ -49,7 +39,7 @@ test_session_post () {
 }
 
 # start mysql server
-docker run --rm -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root mysql
+docker run -e DISABLE_TELEMETRY=true --rm -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root mysql
 
 sleep 26s
 
@@ -62,7 +52,7 @@ printf "\nmysql_host: \"$(ifconfig | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}' | gre
 
 #---------------------------------------------------
 # start with no network options
-docker run --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db 
+docker run -e DISABLE_TELEMETRY=true --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db 
 
 sleep 10s
 
@@ -70,7 +60,7 @@ test_equal `no_of_running_containers` 1 "start with no network options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
-docker run -p 3567:3567 --rm -d --name supertokens supertokens-mysql:circleci
+docker run -e DISABLE_TELEMETRY=true -p 3567:3567 --rm -d --name supertokens supertokens-mysql:circleci
 
 sleep 17s
 
@@ -84,7 +74,7 @@ docker rm supertokens -f
 
 #---------------------------------------------------
 # start with mysql password
-docker run $NETWORK_OPTIONS -e MYSQL_PASSWORD=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -e MYSQL_PASSWORD=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 10s
 
@@ -92,7 +82,7 @@ test_equal `no_of_running_containers` 1 "start with mysql password"
 
 #---------------------------------------------------
 # start with mysql user
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -e MYSQL_USER=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 10s
 
@@ -100,7 +90,7 @@ test_equal `no_of_running_containers` 1 "start with mysql user"
 
 #---------------------------------------------------
 # start with mysql user, mysql password
-docker run $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQL_PASSWORD=root --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -114,7 +104,7 @@ docker rm supertokens -f
 
 #---------------------------------------------------
 # start by sharing config.yaml
-docker run $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/lib/supertokens/config.yaml --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -128,7 +118,7 @@ docker rm supertokens -f
 
 # ---------------------------------------------------
 # test info path
-docker run $NETWORK_OPTIONS -v $PWD:/home/supertokens -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -v $PWD:/home/supertokens -e MYSQL_USER=root -e MYSQL_PASSWORD=root -e INFO_LOG_PATH=/home/supertokens/info.log -e ERROR_LOG_PATH=/home/supertokens/error.log --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
