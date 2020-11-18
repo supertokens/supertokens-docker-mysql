@@ -43,7 +43,7 @@ docker run -e DISABLE_TELEMETRY=true --rm -d -p 3306:3306 --name mysql -e MYSQL_
 
 sleep 26s
 
-docker exec mysql mysql -u root --password=root -e "CREATE DATABASE auth_session;"
+docker exec mysql mysql -u root --password=root -e "CREATE DATABASE supertokens;"
 
 # setting network options for testing
 OS=`uname`
