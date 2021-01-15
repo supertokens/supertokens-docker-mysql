@@ -192,6 +192,12 @@ then
     then
         echo "mysql_emailpassword_pswd_reset_tokens_table_name: $MYSQL_EMAILPASSWORD_PSWD_RESET_TOKENS_TABLE_NAME" >> $CONFIG_FILE
     fi
+
+    # check if mysql emailpassword email verification tokens table name is passed
+    if [ ! -z $MYSQL_EMAILPASSWORD_EMAIL_VERIFICATION_TOKENS_TABLE_NAME ]
+    then
+        echo "mysql_emailpassword_email_verification_tokens_table_name: $MYSQL_EMAILPASSWORD_EMAIL_VERIFICATION_TOKENS_TABLE_NAME" >> $CONFIG_FILE
+    fi
 fi
 
 # check if no options has been passed to docker run
