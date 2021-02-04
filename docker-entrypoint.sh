@@ -188,9 +188,15 @@ then
     fi
 
     # check if mysql emailpassword email verification tokens table name is passed
-    if [ ! -z $MYSQL_EMAILPASSWORD_EMAIL_VERIFICATION_TOKENS_TABLE_NAME ]
+    if [ ! -z $MYSQL_EMAILVERIFICATION_TOKENS_TABLE_NAME ]
     then
-        echo "mysql_emailpassword_email_verification_tokens_table_name: $MYSQL_EMAILPASSWORD_EMAIL_VERIFICATION_TOKENS_TABLE_NAME" >> $CONFIG_FILE
+        echo "mysql_emailpassword_email_verification_tokens_table_name: $MYSQL_EMAILVERIFICATION_TOKENS_TABLE_NAME" >> $CONFIG_FILE
+    fi
+
+    # check if mysql verified emails table name is passed
+    if [ ! -z $MYSQL_EMAILVERIFICATION_VERIFIED_EMAILS_TABLE_NAME ]
+    then
+        echo "mysql_emailverification_verified_emails_table_name: $MYSQL_EMAILVERIFICATION_VERIFIED_EMAILS_TABLE_NAME" >> $CONFIG_FILE
     fi
 fi
 
