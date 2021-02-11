@@ -198,6 +198,12 @@ then
     then
         echo "mysql_emailverification_verified_emails_table_name: $MYSQL_EMAILVERIFICATION_VERIFIED_EMAILS_TABLE_NAME" >> $CONFIG_FILE
     fi
+
+        # check if mysql verified emails table name is passed
+    if [ ! -z $MYSQL_THIRDPARTY_USERS_TABLE_NAME ]
+    then
+        echo "mysql_thirdparty_users_table_name: $MYSQL_THIRDPARTY_USERS_TABLE_NAME" >> $CONFIG_FILE
+    fi
 fi
 
 # check if no options has been passed to docker run
