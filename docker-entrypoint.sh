@@ -163,6 +163,14 @@ then
         echo "mysql_database_name: $MYSQL_DATABASE_NAME" >> $CONFIG_FILE
     fi
 
+    # check if mysql table name prefix is passed
+    if [ ! -z $MYSQL_TABLE_NAMES_PREFIX ]
+    then
+        echo "mysql_table_names_prefix: $MYSQL_TABLE_NAMES_PREFIX" >> $CONFIG_FILE
+    fi
+
+    # THE CONFIGS BELOW ARE DEPRECATED----------------
+
     # check if mysql key value table name is passed
     if [ ! -z $MYSQL_KEY_VALUE_TABLE_NAME ]
     then
