@@ -83,6 +83,7 @@ workflows:
       - publish:
           context:
             - slack-notification
+            - docker-hub
           filters:
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
@@ -91,7 +92,6 @@ workflows:
       - test:
           context:
             - slack-notification
-            - docker-hub
           filters:
             tags:
               only: /dev-v[0-9]+(\.[0-9]+)*/
