@@ -5,7 +5,7 @@ docker build -t supertokens-mysql:circleci .
 test_equal () {
     if [[ $1 -ne $2 ]]
     then
-        printf "\x1b[1;31merror\x1b[0m in $3\n"
+        printf "\x1b[1;31merror\x1b[0m from test_equal in $3\n"
         exit 1
     fi
 }
@@ -19,7 +19,7 @@ test_hello () {
     STATUS_CODE=$(curl -I -X GET http://127.0.0.1:3567/hello -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
-        printf "\x1b[1;31merror\xd1b[0m in $message\n"
+        printf "\x1b[1;31merror\xd1b[0m from test_hello in $message\n"
         exit 1
     fi
 }
@@ -34,10 +34,12 @@ test_session_post () {
     }' -o /dev/null -w '%{http_code}\n' -s)
     if [[ $STATUS_CODE -ne "200" ]]
     then
-        printf "\x1b[1;31merror\xd1b[0m in $message\n"
+        printf "\x1b[1;31merror\xd1b[0m from test_session_post in $message\n"
         exit 1
     fi
 }
+
+no_of_containers_running_at_start=`no_of_running_containers`
 
 # start mysql server
 docker run -e DISABLE_TELEMETRY=true --rm -d -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=root mysql
@@ -48,8 +50,9 @@ docker exec mysql mysql -u root --password=root -e "CREATE DATABASE supertokens;
 
 # setting network options for testing
 OS=`uname`
-NETWORK_OPTIONS="-p 3567:3567 -e MYSQL_HOST=$(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)"
-printf "\nmysql_host: \"$(ifconfig | grep -E '([0-9]{1,3}\.){3}[0-9]{1,3}' | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1)\"" >> $PWD/config.yaml
+MYSQL_IP=$(ip a | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1 | grep -o -E "([0-9]{1,3}\.){3}[0-9]{1,3}")
+NETWORK_OPTIONS="-p 3567:3567 -e MYSQL_HOST=$MYSQL_IP"
+printf "\nmysql_host: \"$MYSQL_IP\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
 # start with no network options
@@ -57,7 +60,7 @@ docker run -e DISABLE_TELEMETRY=true --rm -d --name supertokens supertokens-mysq
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with no network options"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+1)) "start with no network options"
 
 #---------------------------------------------------
 # start with no network options, but in mem db
@@ -65,7 +68,7 @@ docker run -e DISABLE_TELEMETRY=true -p 3567:3567 --rm -d --name supertokens sup
 
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "start with no network options, but in mem db"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "start with no network options, but in mem db"
 
 test_hello "start with no network options, but in mem db"
 
@@ -79,7 +82,7 @@ docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -e MYSQL_PASSWORD=root --r
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with mysql password"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+1)) "start with mysql password"
 
 #---------------------------------------------------
 # start with mysql user
@@ -87,7 +90,7 @@ docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -e MYSQL_USER=root --rm -d
 
 sleep 10s
 
-test_equal `no_of_running_containers` 1 "start with mysql user"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+1)) "start with mysql user"
 
 #---------------------------------------------------
 # start with mysql user, mysql password
@@ -95,7 +98,7 @@ docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -e MYSQL_USER=root -e MYSQ
 
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "start with mysql user, mysql password"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "start with mysql user, mysql password"
 
 test_hello "start with mysql user, mysql password"
 
@@ -109,7 +112,7 @@ docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -v $PWD/config.yaml:/usr/l
 
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "start by sharing config.yaml"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "start by sharing config.yaml"
 
 test_hello "start by sharing config.yaml"
 
@@ -123,7 +126,7 @@ docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS -v $PWD:/home/supertokens 
 
 sleep 17s
 
-test_equal `no_of_running_containers` 2 "test info path"
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "test info path"
 
 test_hello "test info path"
 
