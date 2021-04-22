@@ -52,6 +52,7 @@ docker exec mysql mysql -u root --password=root -e "CREATE DATABASE supertokens;
 OS=`uname`
 MYSQL_IP=$(ip a | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1 | grep -o -E "([0-9]{1,3}\.){3}[0-9]{1,3}")
 NETWORK_OPTIONS="-p 3567:3567 -e MYSQL_HOST=$MYSQL_IP"
+NETWORK_OPTIONS_CONNECTION_URI="-p 3567:3567 -e MYSQL_CONNECTION_URI=mysql://root:root@$MYSQL_IP:3303"
 printf "\nmysql_host: \"$MYSQL_IP\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
@@ -103,6 +104,20 @@ test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "
 test_hello "start with mysql user, mysql password"
 
 test_session_post "start with mysql user, mysql password"
+
+docker rm supertokens -f
+
+#---------------------------------------------------
+# start with mysql connectionURI
+docker run -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
+
+sleep 17s
+
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "start with mysql connectionURI"
+
+test_hello "start with mysql connectionURI"
+
+test_session_post "start with mysql connectionURI"
 
 docker rm supertokens -f
 
