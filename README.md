@@ -25,7 +25,8 @@ Available environment variables
 	- ERROR\_LOG\_PATH
     - MAX\_SERVER\_POOL\_SIZE
 	- DISABLE\_TELEMETRY
-- **MySQL:**	
+- **MySQL:**
+	- MYSQL\_CONNECTION\_URI
 	- MYSQL\_USER
 	- MYSQL\_PASSWORD
 	- MYSQL\_CONNECTION\_POOL\_SIZE

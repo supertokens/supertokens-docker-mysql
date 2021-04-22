@@ -169,6 +169,11 @@ then
         echo "mysql_table_names_prefix: $MYSQL_TABLE_NAMES_PREFIX" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $MYSQL_CONNECTION_URI ]
+    then
+        echo "mysql_connection_uri: $MYSQL_CONNECTION_URI" >> $CONFIG_FILE
+    fi
+
     # THE CONFIGS BELOW ARE DEPRECATED----------------
 
     # check if mysql key value table name is passed
