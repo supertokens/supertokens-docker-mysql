@@ -52,7 +52,7 @@ docker exec mysql mysql -u root --password=root -e "CREATE DATABASE supertokens;
 OS=`uname`
 MYSQL_IP=$(ip a | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d: | head -n1 | grep -o -E "([0-9]{1,3}\.){3}[0-9]{1,3}")
 NETWORK_OPTIONS="-p 3567:3567 -e MYSQL_HOST=$MYSQL_IP"
-NETWORK_OPTIONS_CONNECTION_URI="-p 3567:3567 -e MYSQL_CONNECTION_URI=mysql://root:root@$MYSQL_IP:3303"
+NETWORK_OPTIONS_CONNECTION_URI="-p 3567:3567 -e MYSQL_CONNECTION_URI=mysql://root:root@$MYSQL_IP:3306"
 printf "\nmysql_host: \"$MYSQL_IP\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
