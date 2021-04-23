@@ -37,12 +37,19 @@ Available environment variables
 
 
 ```bash
-$ docker run \
+docker run \
 	-p 3567:3567 \
-	-e MYSQL_USER=mysqlUser \
-	-e MYSQL_HOST=192.168.1.2 \
-	-e MYSQL_PORT=3306 \
-	-e MYSQL_PASSWORD=password \
+	-e MYSQL_CONNECTION_URI="mysql://username:password@host:port/dbName" \
+	-d supertokens/supertokens-mysql
+
+# OR
+
+docker run \
+	-p 3567:3567 \
+	-e MYSQL_USER="mysqlUser" \
+	-e MYSQL_HOST="192.168.1.2" \
+	-e MYSQL_PORT="3306" \
+	-e MYSQL_PASSWORD="password" \
 	-d supertokens/supertokens-mysql
 ```
 
@@ -72,14 +79,14 @@ $ docker run \
 $ docker run \
 	-p 3567:3567 \
 	-v /path/to/logsFolder:/home/logsFolder \
-	-e INFO_LOG_PATH=/home/logsFolder/info.log \
-	-e ERROR_LOG_PATH=/home/logsFolder/error.log \
-	-e MYSQL_USER=mysqlUser \
-	-e MYSQL_PASSWORD=password \
+	-e INFO_LOG_PATH="/home/logsFolder/info.log" \
+	-e ERROR_LOG_PATH="/home/logsFolder/error.log" \
+	-e MYSQL_USER="mysqlUser" \
+	-e MYSQL_PASSWORD="password" \
 	-d supertokens/supertokens-mysql
 ```
 
 ## Database setup
 - Before you start this container, make sure to initialize your database.
 - You do not need to ensure that the MySQL database has started before this container is started. During bootup, SuperTokens will wait for ~1 hour for a MySQL instance to be available.
-- If ```MYSQL_USER``` and ```MYSQL_PASSWORD``` are not provided, then SuperTokens will use an in memory database.
+- If `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_CONNECTION_URI` are not provided, then SuperTokens will use an in memory database.
