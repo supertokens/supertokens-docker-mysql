@@ -91,6 +91,16 @@ then
         echo "access_token_signing_key_update_interval: $ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $PASSWORD_RESET_TOKEN_LIFETIME ]
+    then
+        echo "password_reset_token_lifetime: $PASSWORD_RESET_TOKEN_LIFETIME" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $EMAIL_VERIFICATION_TOKEN_LIFETIME ]
+    then
+        echo "email_verification_token_lifetime: $EMAIL_VERIFICATION_TOKEN_LIFETIME" >> $CONFIG_FILE
+    fi
+
     # check if refresh token validity is passed
     if [ ! -z $REFRESH_TOKEN_VALIDITY ]
     then
