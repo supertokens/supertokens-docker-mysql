@@ -2,7 +2,7 @@
 ```bash
 # This will start with an in memory database.
 
-$ docker run -p 3567:3567 -d supertokens/supertokens-mysql
+$ docker run -p 3567:3567 -d registry.supertokens.io/supertokens/supertokens-mysql
 ```
 
 ## Configuration
@@ -42,7 +42,7 @@ Available environment variables
 docker run \
 	-p 3567:3567 \
 	-e MYSQL_CONNECTION_URI="mysql://username:password@host:port/dbName" \
-	-d supertokens/supertokens-mysql
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 
 # OR
 
@@ -52,7 +52,7 @@ docker run \
 	-e MYSQL_HOST="192.168.1.2" \
 	-e MYSQL_PORT="3306" \
 	-e MYSQL_PASSWORD="password" \
-	-d supertokens/supertokens-mysql
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 ```
 
 #### Using custom config file
@@ -68,7 +68,7 @@ docker run \
 $ docker run \
 	-p 3567:3567 \
 	-v /path/to/config.yaml:/usr/lib/supertokens/config.yaml \
-	-d supertokens/supertokens-mysql
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 ```
 
 ## Logging
@@ -85,7 +85,7 @@ $ docker run \
 	-e ERROR_LOG_PATH="/home/logsFolder/error.log" \
 	-e MYSQL_USER="mysqlUser" \
 	-e MYSQL_PASSWORD="password" \
-	-d supertokens/supertokens-mysql
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 ```
 
 ## Database setup
