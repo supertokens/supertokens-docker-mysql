@@ -107,6 +107,16 @@ then
         echo "refresh_token_validity: $REFRESH_TOKEN_VALIDITY" >> $CONFIG_FILE
     fi
 
+    if [ ! -z $PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS ]
+    then
+        echo "passwordless_max_code_input_attempts: $PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $PASSWORDLESS_CODE_LIFETIME ]
+    then
+        echo "passwordless_code_lifetime: $PASSWORDLESS_CODE_LIFETIME" >> $CONFIG_FILE
+    fi
+
     # check if info log path is not passed
     if [ ! -z $INFO_LOG_PATH ]
     then
