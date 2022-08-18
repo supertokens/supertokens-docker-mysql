@@ -154,7 +154,7 @@ then
 
     if [ ! -z $LOG_LEVEL ]
     then
-        echo "log_level: $LOG_LEVEL" >> $LOG_LEVEL
+        echo "log_level: $LOG_LEVEL" >> $CONFIG_FILE
     fi
 
     # check if info log path is not passed
