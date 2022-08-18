@@ -36,6 +36,7 @@ Available environment variables
 	- ARGON2\_PARALLELISM
 	- ARGON2\_HASHING\_POOL\_SIZE
 	- BCRYPT\_LOG\_ROUNDS
+	- LOG\_LEVEL
 - **MySQL:**
 	- MYSQL\_CONNECTION\_URI
 	- MYSQL\_USER
