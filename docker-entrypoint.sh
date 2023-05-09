@@ -86,9 +86,9 @@ then
     fi
 
     # check if access token signing key update interval is passed
-    if [ ! -z $ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL ]
+    if [ ! -z $ACCESS_TOKEN_DYNAMIC_SIGNING_KEY_UPDATE_INTERVAL ]
     then
-        echo "access_token_signing_key_update_interval: $ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL" >> $CONFIG_FILE
+        echo "access_token_dynamic_signing_key_update_interval: $ACCESS_TOKEN_DYNAMIC_SIGNING_KEY_UPDATE_INTERVAL" >> $CONFIG_FILE
     fi
 
     if [ ! -z $PASSWORD_RESET_TOKEN_LIFETIME ]
