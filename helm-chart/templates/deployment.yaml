@@ -47,31 +47,31 @@ spec:
             - name: "SUPERTOKENS_PORT"
               value: "3567"
             - name: "MYSQL_CONNECTION_POOL_SIZE"
-              value: {{ .Values.database.connectionPoolSize }}
+              value: "{{ .Values.database.connectionPoolSize }}"
             - name: "ACCESS_TOKEN_VALIDITY"
-              value: {{ .Values.accessTokenValidity }}
+              value: "{{ .Values.accessTokenValidity }}"
             - name: "ACCESS_TOKEN_BLACKLISTING"
-              value: {{ .Values.accessTokenBlacklisting }}
+              value: "{{ .Values.accessTokenBlacklisting }}"
             - name: "ACCESS_TOKEN_SIGNING_KEY_DYNAMIC"
-              value: {{ .Values.accessTokenSigningKeyDynamic }}
+              value: "{{ .Values.accessTokenSigningKeyDynamic }}"
             - name: "ACCESS_TOKEN_SIGNING_KEY_UPDATE_INTERVAL"
-              value: {{ .Values.accessTokenSigningKeyUpdateInterval }}
+              value: "{{ .Values.accessTokenSigningKeyUpdateInterval }}"
             - name: "REFRESH_TOKEN_VALIDITY"
-              value: {{ .Values.refreshTokenValidity }}
+              value: "{{ .Values.refreshTokenValidity }}"
             - name: "PASSWORD_RESET_TOKEN_LIFETIME"
-              value: {{ .Values.passwordResetTokenLifetime }}
+              value: "{{ .Values.passwordResetTokenLifetime }}"
             - name: "EMAIL_VERIFICATION_TOKEN_LIFETIME"
-              value: {{ .Values.emailVerificationTokenLifetime }}
+              value: "{{ .Values.emailVerificationTokenLifetime }}"
             - name: "PASSWORDLESS_MAX_CODE_INPUT_ATTEMPTS"
-              value: {{ .Values.passwordlessMaxCodeInputAttempts }}
+              value: "{{ .Values.passwordlessMaxCodeInputAttempts }}"
             - name: "PASSWORDLESS_CODE_LIFETIME"
-              value: {{ .Values.passwordlessCodeLifetime }}
+              value: "{{ .Values.passwordlessCodeLifetime }}"
             - name: "BASE_PATH"
-              value: {{ .Values.basePath }}
+              value: "{{ .Values.basePath }}"
             - name: "DISABLE_TELEMETRY"
-              value: {{ .Values.disableTelemetry }}
+              value: "{{ .Values.disableTelemetry }}"
             - name: "MAX_SERVER_POOL_SIZE"
-              value: {{ .Values.maxServerPoolSize }}
+              value: "{{ .Values.maxServerPoolSize }}"
             {{- if .Values.apiKeys.enabled }}
             - name: "API_KEYS"
               value: "{{ join "," .Values.apiKeys.keys }}"
