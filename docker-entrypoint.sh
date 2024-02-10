@@ -316,6 +316,21 @@ then
     then
         echo "mysql_thirdparty_users_table_name: $MYSQL_THIRDPARTY_USERS_TABLE_NAME" >> $CONFIG_FILE
     fi
+
+    if [ ! -z $MYSQL_IDLE_CONNECTION_TIMEOUT ]
+    then
+        echo "mysql_idle_connection_timeout: $MYSQL_IDLE_CONNECTION_TIMEOUT" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $MYSQL_MINIMUM_IDLE_CONNECTIONS ]
+    then
+        echo "mysql_minimum_idle_connections: $MYSQL_MINIMUM_IDLE_CONNECTIONS" >> $CONFIG_FILE
+    fi
+
+    if [ ! -z $SUPERTOKENS_SAAS_LOAD_ONLY_CUD ]
+    then
+        echo "supertokens_saas_load_only_cud: $SUPERTOKENS_SAAS_LOAD_ONLY_CUD" >> $CONFIG_FILE
+    fi
 fi
 
 # check if no options has been passed to docker run
