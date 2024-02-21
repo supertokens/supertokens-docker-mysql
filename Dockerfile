@@ -15,9 +15,6 @@ RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
 	-H "api-version: 0"
 RUN unzip supertokens.zip
 RUN cd supertokens && ./install
-RUN mkdir ./supertokens
-COPY ./supertokens-root/ ./supertokens
-RUN cd supertokens && ./jre/bin/java -classpath "./cli/*" io.supertokens.cli.Main true
 
 FROM debian:bookworm-slim
 RUN groupadd supertokens && useradd -m -s /bin/bash -g supertokens supertokens
