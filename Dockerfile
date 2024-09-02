@@ -1,7 +1,7 @@
 FROM ubuntu:bionic-20200219 as tmp
 ARG PLUGIN_NAME=mysql
 ARG PLAN_TYPE=FREE
-ARG CORE_VERSION=9.2.0
+ARG CORE_VERSION=9.2.1
 ARG PLUGIN_VERSION=7.1.2
 RUN apt-get update && apt-get install -y curl zip
 RUN OS= && dpkgArch="$(dpkg --print-architecture)" && \
