@@ -39,6 +39,32 @@ test_session_post () {
     fi
 }
 
+test_signup_post () {
+    message=$1
+    STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/recipe/signup -H "Content-Type: application/json" -d '{
+        "email": "testing@testing.test",
+        "password": "testpassword"
+    }' -o /dev/null -w '%{http_code}\n' -s)
+    if [[ $STATUS_CODE -ne "200" ]]
+    then
+        printf "\x1b[1;31merror\xd1b[0m from test_signup_post in $message\n"
+        exit 1
+    fi
+}
+
+test_signin_post () {
+    message=$1
+    STATUS_CODE=$(curl -X POST http://127.0.0.1:3567/recipe/signin -H "Content-Type: application/json" -d '{
+        "email": "testing@testing.test",
+        "password": "testpassword"
+    }' -o /dev/null -w '%{http_code}\n' -s)
+    if [[ $STATUS_CODE -ne "200" ]]
+    then
+        printf "\x1b[1;31merror\xd1b[0m from test_signin_post in $message\n"
+        exit 1
+    fi
+}
+
 no_of_containers_running_at_start=`no_of_running_containers`
 
 # start mysql server
@@ -157,6 +183,42 @@ docker rm supertokens -f
 rm -rf $PWD/info.log
 rm -rf $PWD/error.log
 git checkout $PWD/config.yaml
+
+#---------------------------------------------------
+# test --read-only
+docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db --read-only
+
+sleep 17s
+
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "test --read-only"
+
+test_hello "test --read-only"
+
+test_session_post "test --read-only"
+
+test_signup_post "test --read-only"
+
+test_signin_post "test --read-only"
+
+docker rm supertokens -f
+
+#---------------------------------------------------
+# test --read-only ARGON2
+docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI -e PASSWORD_HASHING_ALG=ARGON2  --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-postgresql:circleci --no-in-mem-db --read-only
+
+sleep 17s
+
+test_equal `no_of_running_containers` $((no_of_containers_running_at_start+2)) "test --read-only ARGON2"
+
+test_hello "test --read-only ARGON2"
+
+test_session_post "test --read-only ARGON2"
+
+test_signup_post "test --read-only ARGON2"
+
+test_signin_post "test --read-only ARGON2"
+
+docker rm supertokens -f
 
 docker rm mysql -f
 
