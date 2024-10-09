@@ -65,6 +65,27 @@ test_signin_post () {
     fi
 }
 
+test_argon2_hash_format () {
+  message=$1
+  result=$(docker exec -it mysql mysql -u root -proot "supertokens" -e "select password_hash from emailpassword_users where email = 'testing@testing.test'")
+  if [[ "$result" != "$argon2"* ]] # doesn't start with $argon2
+    then
+      printf "\x1b[1;31merror\xd1b[0m from test_argon2_hash_format in $message\n"
+      exit 1
+  fi
+}
+
+test_not_argon2_hash_format () {
+  message=$1
+  result=$(docker exec -it mysql mysql -u root -proot "supertokens" -e "select password_hash from emailpassword_users where email = 'testing@testing.test'")
+  if [[ "$result" =~ \$argon2* ]] # starts with $argon2
+    then
+      printf "\x1b[1;31merror\xd1b[0m from test_not_argon2_hash_format in $message\n"
+      exit 1
+  fi
+}
+
+
 no_of_containers_running_at_start=`no_of_running_containers`
 
 # start mysql server
@@ -83,7 +104,7 @@ printf "\nmysql_host: \"$MYSQL_IP\"" >> $PWD/config.yaml
 
 #---------------------------------------------------
 # start with no network options
-docker run -e DISABLE_TELEMETRY=true --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db 
+docker run -e DISABLE_TELEMETRY=true --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 10s
 
@@ -186,7 +207,7 @@ git checkout $PWD/config.yaml
 
 #---------------------------------------------------
 # test --read-only
-docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db --read-only
+docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -198,13 +219,15 @@ test_session_post "test --read-only"
 
 test_signup_post "test --read-only"
 
+test_not_argon2_hash_format "test --read-only"
+
 test_signin_post "test --read-only"
 
 docker rm supertokens -f
 
 #---------------------------------------------------
 # test --read-only ARGON2
-docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI -e PASSWORD_HASHING_ALG=ARGON2  --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db --read-only
+docker run  --read-only -e DISABLE_TELEMETRY=true $NETWORK_OPTIONS_CONNECTION_URI -e PASSWORD_HASHING_ALG=ARGON2  --tmpfs=/lib/supertokens/temp/:exec --rm -d --name supertokens supertokens-mysql:circleci --no-in-mem-db
 
 sleep 17s
 
@@ -215,6 +238,8 @@ test_hello "test --read-only ARGON2"
 test_session_post "test --read-only ARGON2"
 
 test_signup_post "test --read-only ARGON2"
+
+test_argon2_hash_format "test --read-only ARGON2"
 
 test_signin_post "test --read-only ARGON2"
 

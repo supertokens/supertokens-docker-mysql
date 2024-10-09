@@ -113,7 +113,7 @@ $ docker run \
 
 
 ## Read-only root fs
-- If you wish to run this container with a read-only root filesystem, you should use the `--read-only` flag *for the container too*.
+- If you wish to run this container with a read-only root filesystem, you can do so.
 - The container still needs a temp area, where it can write its stuff, and also needs to be able to execute from there.
 - You will have to create a mount for `/lib/supertokens/temp/`
 
@@ -122,7 +122,7 @@ docker run \
 	-p 3567:3567 \
 	--mount source=/path/on/host/machine,destination=/lib/supertokens/temp/,type=bind \
 	--read-only \
-	-d registry.supertokens.io/supertokens/supertokens-mysql --read-only
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 ```
 
 ```bash
@@ -130,5 +130,5 @@ docker run \
 	-p 3567:3567 \
 	--tmpfs=/lib/supertokens/temp/:exec \
 	--read-only \
-	-d registry.supertokens.io/supertokens/supertokens-mysql --read-only
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 ```
