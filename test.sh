@@ -151,14 +151,13 @@ test_hello "test info path"
 
 test_session_post "test info path"
 
-if [[ ! -f $PWD/info.log || ! -f $PWD/error.log ]]
+if [[ ! -f $PWD/sthome/info.log || ! -f $PWD/sthome/error.log ]]
 then
     exit 1
 fi
 
 docker rm supertokens -f
 
-rm -rf $PWD/sthome
 git checkout $PWD/config.yaml
 
 docker rm mysql -f
