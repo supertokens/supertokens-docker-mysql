@@ -150,5 +150,5 @@ docker run \
 	--sysctl net.ipv4.tcp_keepalive_time=60 \
 	--sysctl net.ipv4.tcp_keepalive_intvl=5 \
 	--sysctl net.ipv4.tcp_keepalive_probes=3 \
-	-d registry.supertokens.io/supertokens/supertokens-postgresql
+	-d registry.supertokens.io/supertokens/supertokens-mysql
 ```
